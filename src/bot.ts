@@ -73,7 +73,7 @@ export class EchoBot extends ActivityHandler {
 
             conversation_history = conversation_history + "User: " + context.activity.text + "\nChatbot: " + data.choices[0].text + "\n"
            
-            const replyText = `AOAI: ${ data.choices[0].text }`;
+            const replyText = `Jeefs: ${ data.choices[0].text }`;
             // const replyText = `Echox: ${ context.activity.text }`;
             await context.sendActivity(MessageFactory.text(replyText, replyText));
             // By calling next() you ensure that the next BotHandler is run.

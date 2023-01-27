@@ -76,7 +76,53 @@ server.get('/', (req, res) => {
 
     // display basic html page
     res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.write('<html><head><title>Bot Framework Streaming Echo Bot</title></head><body><h1>Bot Framework Streaming Echo Bot</h1></body></html>');
+    res.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <script
+        crossorigin="anonymous"
+        src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"
+        ></script>
+        <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        #webchat {
+            height: 100%;
+            width: 100%;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="webchat" role="main"></div>
+        <script>
+        window.WebChat.renderWebChat(
+            {
+            directLine: window.WebChat.createDirectLine({
+                token: 'F6Oqh7KxG2s.hVaK5reI6KLfaF_BAbs4m5h2jfUTq8OYkS_E3tpm0ys'
+            }),
+            styleOptions: {
+                    botAvatarInitials: 'BF',
+                    userAvatarInitials: 'WC'
+                },
+            userID: 'YOUR_USER_ID',
+            username: 'Web Chat User',
+            locale: 'en-US'
+            },
+            document.getElementById('webchat')
+        );
+        </script>
+        
+    </body>
+    </html>
+    `);
     res.end();
 
 });
