@@ -109,8 +109,8 @@ server.get('/', (req, res) => {
                 token: 'F6Oqh7KxG2s.hVaK5reI6KLfaF_BAbs4m5h2jfUTq8OYkS_E3tpm0ys'
             }),
             styleOptions: {
-                    botAvatarInitials: 'BF',
-                    userAvatarInitials: 'WC'
+                    botAvatarInitials: 'GPT',
+                    userAvatarInitials: 'USR'
                 },
             userID: 'YOUR_USER_ID',
             username: 'Web Chat User',
