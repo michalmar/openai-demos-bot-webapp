@@ -60,7 +60,7 @@ export class EchoBot extends ActivityHandler {
             let tmp_prompt = prompt.replace("<conversation history>", conversation_history).replace("<user input>", context.activity.text)
             const requestBody =     {
                 prompt: tmp_prompt
-                , max_tokens: 100
+                , max_tokens: 255
                 // , temperature: "1.0"
                 // , presence_penalty: "0.0"
                 // , frequency_penalty: "0.0"
