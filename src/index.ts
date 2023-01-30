@@ -115,6 +115,7 @@ server.get('/', (req, res) => {
     <body>
         
         <h1><img src='https://logos-world.net/wp-content/uploads/2021/02/Microsoft-Azure-Emblem.png' height="40">Azure OpenAI Service demo</h1>
+        <pre>version 20230131</pre>
         <div style="" id="webchat" role="main"></div>
         <script>
         // Set  the CSS rules.
