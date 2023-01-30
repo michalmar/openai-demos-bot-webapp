@@ -90,6 +90,7 @@ server.get('/', (req, res) => {
             height: 100%;
             background-image: linear-gradient(slategrey, darkslategrey);
             color: antiquewhite;
+            font-family: Calibri, sans-serif;
         }
 
         body {
@@ -106,9 +107,8 @@ server.get('/', (req, res) => {
         </style>
     </head>
     <body>
-        <img src="logo.png" alt="logo" width="50%">
-        <img src="./src/logo.png" alt="logo" width="50%">
-        <img src="src/logo.png" alt="logo" width="50%">
+        <h1>Azure OpenAI Service</h1>
+        <p>chatbot using GPT3.5 model</p>
         <div style="" id="webchat" role="main"></div>
         <script>
         // Set  the CSS rules.
