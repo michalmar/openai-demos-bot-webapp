@@ -106,7 +106,9 @@ server.get('/', (req, res) => {
         </style>
     </head>
     <body>
-        <img src="src\logo.png" alt="" width="50%">
+        <img src="logo.png" alt="logo" width="50%">
+        <img src="./src/logo.png" alt="logo" width="50%">
+        <img src="src/logo.png" alt="logo" width="50%">
         <div style="" id="webchat" role="main"></div>
         <script>
         // Set  the CSS rules.

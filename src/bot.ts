@@ -39,7 +39,7 @@ export class EchoBot extends ActivityHandler {
         const headers = {
         'Content-Type': 'application/json',
         // 'Authorization': 'Bearer YOUR_TOKEN'
-        'api-key': 'cc3fd4239a5e49419ab55210bd664d98'
+        'api-key': process.env.OPENAI_API_KEY
         }
 
 
