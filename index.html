@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -8,76 +9,82 @@
     <style>
       html,
       body {
-         height: 100%;
-         background-image: linear-gradient(slategrey, darkslategrey);
-         color: antiquewhite;
-         font-family: Calibri, sans-serif;
+          height: 100%;
+          background-image: linear-gradient(slategrey, darkslategrey);
+          color: antiquewhite;
+          font-family: 'Segoe UI', Calibri, sans-serif;
       }
 
       body {
-        padding: 5px;
+        padding-left: 5px;
       }
 
       #webchat {
         height: 85%;
         width: 100%;
       }
+      .webchat__stacked-layout__main{
+        white-space: break-spaces;
+        
+      }
       .webchat__stacked-layout--from-user{
         background-color: rgba(70, 130, 180, .2);
       }
+      
     </style>
   </head>
   <body>
-    <h1>Azure OpenAI Service</h1>
-    <p>chatbot using GPT3.5 model</p>
+    
+    <h1><img src='https://logos-world.net/wp-content/uploads/2021/02/Microsoft-Azure-Emblem.png' height="40">Azure OpenAI Service demo</h1>
     <div style="" id="webchat" role="main"></div>
     <script>
       // Set  the CSS rules.
-     const styleSet = window.WebChat.createStyleSet({
-         bubbleBackground: 'transparent',
-         bubbleBorderColor: 'darkslategrey',
-         bubbleBorderRadius: 2,
-         bubbleBorderStyle: 'solid',
-         bubbleBorderWidth: 0,
-         bubbleTextColor: 'antiquewhite',
+      const styleSet = window.WebChat.createStyleSet({
+          bubbleBackground: 'transparent',
+          bubbleBorderColor: 'darkslategrey',
+          bubbleBorderRadius: 5,
+          bubbleBorderStyle: 'solid',
+          bubbleBorderWidth: 0,
+          bubbleTextColor: 'antiquewhite',
 
-         userAvatarBackgroundColor: 'rgba(70, 130, 180, .3)',
-         bubbleFromUserBackground: 'transparent', 
-         bubbleFromUserBorderColor: '#E6E6E6',
-         bubbleFromUserBorderRadius: 2,
-         bubbleFromUserBorderStyle: 'solid',
-         bubbleFromUserBorderWidth: 0,
-         bubbleFromUserTextColor: 'antiquewhite',
+          userAvatarBackgroundColor: 'rgba(70, 130, 180, .3)',
+          bubbleFromUserBackground: 'transparent', 
+          bubbleFromUserBorderColor: '#E6E6E6',
+          bubbleFromUserBorderRadius: 5,
+          bubbleFromUserBorderStyle: 'solid',
+          bubbleFromUserBorderWidth: 0,
+          bubbleFromUserTextColor: 'antiquewhite',
 
-         notificationText: 'white',
+          notificationText: 'white',
 
-         bubbleMinWidth: 200,
+          bubbleMinWidth: 400,
+          bubbleMaxWidth: 720,
 
-         botAvatarBackgroundColor: 'antiquewhite',
-         avatarBorderRadius: 2,
-         avatarSize: 40,
+          botAvatarBackgroundColor: 'antiquewhite',
+          avatarBorderRadius: 2,
+          avatarSize: 40,
 
-         rootHeight: '100%',
-         rootWidth: '50%',
-         backgroundColor: 'rgba(70, 130, 180, .2)',
+          rootHeight: '100%',
+          rootWidth: '100%',
+          backgroundColor: 'rgba(70, 130, 180, .2)',
 
-         hideUploadButton: 'true'
+          hideUploadButton: 'true'
       });
 
       // After generated, you can modify the CSS rules.
       // Change font family and weight. 
       styleSet.textContent = {
-         ...styleSet.textContent,
-         fontWeight: 'regular'
+          ...styleSet.textContent,
+          fontWeight: 'regular'
       };
 
     // Set the avatar options. 
-     const avatarOptions = {
-         botAvatarInitials: '.',
-         userAvatarInitials: 'Me',
-         botAvatarImage: 'https://dwglogo.com/wp-content/uploads/2019/03/1600px-OpenAI_logo-1024x705.png',
-         
-         };
+      const avatarOptions = {
+          botAvatarInitials: '.',
+          userAvatarInitials: 'Me',
+          botAvatarImage: 'https://dwglogo.com/wp-content/uploads/2019/03/1600px-OpenAI_logo-1024x705.png',
+          
+          };
 
       window.WebChat.renderWebChat(
         {
@@ -89,6 +96,6 @@
         document.getElementById('webchat')
       );
     </script>
-     
+      
   </body>
 </html>

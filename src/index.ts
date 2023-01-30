@@ -77,6 +77,7 @@ server.get('/', (req, res) => {
     // display basic html page
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.write(`
+    
     <!DOCTYPE html>
     <html>
     <head>
@@ -90,32 +91,37 @@ server.get('/', (req, res) => {
             height: 100%;
             background-image: linear-gradient(slategrey, darkslategrey);
             color: antiquewhite;
-            font-family: Calibri, sans-serif;
+            font-family: 'Segoe UI', Calibri, sans-serif;
         }
 
         body {
-            padding: 5px;
+            padding-left: 5px;
         }
 
         #webchat {
             height: 85%;
             width: 100%;
         }
+        .webchat__stacked-layout__main{
+            white-space: break-spaces;
+            
+        }
         .webchat__stacked-layout--from-user{
             background-color: rgba(70, 130, 180, .2);
         }
+        
         </style>
     </head>
     <body>
-        <h1>Azure OpenAI Service</h1>
-        <p>chatbot using GPT3.5 model</p>
+        
+        <h1><img src='https://logos-world.net/wp-content/uploads/2021/02/Microsoft-Azure-Emblem.png' height="40">Azure OpenAI Service demo</h1>
         <div style="" id="webchat" role="main"></div>
         <script>
         // Set  the CSS rules.
         const styleSet = window.WebChat.createStyleSet({
             bubbleBackground: 'transparent',
             bubbleBorderColor: 'darkslategrey',
-            bubbleBorderRadius: 2,
+            bubbleBorderRadius: 5,
             bubbleBorderStyle: 'solid',
             bubbleBorderWidth: 0,
             bubbleTextColor: 'antiquewhite',
@@ -123,21 +129,22 @@ server.get('/', (req, res) => {
             userAvatarBackgroundColor: 'rgba(70, 130, 180, .3)',
             bubbleFromUserBackground: 'transparent', 
             bubbleFromUserBorderColor: '#E6E6E6',
-            bubbleFromUserBorderRadius: 2,
+            bubbleFromUserBorderRadius: 5,
             bubbleFromUserBorderStyle: 'solid',
             bubbleFromUserBorderWidth: 0,
             bubbleFromUserTextColor: 'antiquewhite',
 
             notificationText: 'white',
 
-            bubbleMinWidth: 200,
+            bubbleMinWidth: 400,
+            bubbleMaxWidth: 720,
 
             botAvatarBackgroundColor: 'antiquewhite',
             avatarBorderRadius: 2,
             avatarSize: 40,
 
             rootHeight: '100%',
-            rootWidth: '50%',
+            rootWidth: '100%',
             backgroundColor: 'rgba(70, 130, 180, .2)',
 
             hideUploadButton: 'true'

@@ -11,7 +11,7 @@ export class EchoBot extends ActivityHandler {
         interface RequestBody {
             prompt: string;
             max_tokens: number;
-            // temperature: string;
+            temperature: number;
             // presence_penalty: string;
             // frequency_penalty: string;
 
@@ -60,8 +60,8 @@ export class EchoBot extends ActivityHandler {
             let tmp_prompt = prompt.replace("<conversation history>", conversation_history).replace("<user input>", context.activity.text)
             const requestBody =     {
                 prompt: tmp_prompt
-                , max_tokens: 255
-                // , temperature: "1.0"
+                , max_tokens: 500
+                , temperature: 0.7
                 // , presence_penalty: "0.0"
                 // , frequency_penalty: "0.0"
             };
@@ -73,7 +73,7 @@ export class EchoBot extends ActivityHandler {
            
             const replyText = `${ data.choices[0].text }`;
             // const replyText = `Echox: ${ context.activity.text }`;
-            await context.sendActivity(MessageFactory.text(replyText, replyText));
+            await context.sendActivity(MessageFactory.text(replyText));
             // By calling next() you ensure that the next BotHandler is run.
             await next();
         });
