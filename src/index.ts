@@ -4,7 +4,7 @@
 import * as path from 'path';
 
 import { config } from 'dotenv';
-const ENV_FILE = path.join(__dirname, '..', '.env');
+const ENV_FILE = path.join(__dirname, '..', '.env.local');
 config({ path: ENV_FILE });
 
 import * as restify from 'restify';

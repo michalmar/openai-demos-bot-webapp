@@ -52,12 +52,10 @@ export class EchoBot extends ActivityHandler {
             }
         }
 
-
-
         // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
         this.onMessage(async (context, next) => {
 
-            const url = "https://mma-openai.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2022-12-01"
+            const url = "https://openaimma.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2022-12-01"
        
             let tmp_prompt = prompt.replace("<conversation history>", conversation_history).replace("<user input>", context.activity.text)
             const requestBody =     {
