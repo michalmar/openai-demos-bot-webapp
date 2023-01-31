@@ -71,7 +71,7 @@ export class EchoBot extends ActivityHandler {
             // console.log(data.choices[0].text);
 
             conversation_history = conversation_history + "User: " + context.activity.text + "\nChatbot: " + data.choices[0].text + "\n"
-            let wordCount = conversation_history.split(" ").length;
+            let wordCount = tmp_prompt.split(" ").length;
             const replyText = `${ data.choices[0].text } (${wordCount} words))`;
             // const replyText = `Echox: ${ context.activity.text } value: ${ context.activity.value }`;
             await context.sendActivity(MessageFactory.text(replyText));
