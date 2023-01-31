@@ -54,25 +54,26 @@ export class EchoBot extends ActivityHandler {
 
         // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
         this.onMessage(async (context, next) => {
-
-            const url = "https://openaimma.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2022-12-01"
+            console.log(context.activity.value);
+            
+            // const url = "https://openaimma.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2022-12-01"
        
-            let tmp_prompt = prompt.replace("<conversation history>", conversation_history).replace("<user input>", context.activity.text)
-            const requestBody =     {
-                prompt: tmp_prompt
-                , max_tokens: 500
-                , temperature: 0.7
-                // , presence_penalty: "0.0"
-                // , frequency_penalty: "0.0"
-            };
-            const data = await postDataToEndpoint(url, requestBody, headers);
+            // let tmp_prompt = prompt.replace("<conversation history>", conversation_history).replace("<user input>", context.activity.text)
+            // const requestBody =     {
+            //     prompt: tmp_prompt
+            //     , max_tokens: 500
+            //     , temperature: 0.7
+            //     // , presence_penalty: "0.0"
+            //     // , frequency_penalty: "0.0"
+            // };
+            // const data = await postDataToEndpoint(url, requestBody, headers);
 
-            // console.log(data.choices[0].text);
+            // // console.log(data.choices[0].text);
 
-            conversation_history = conversation_history + "User: " + context.activity.text + "\nChatbot: " + data.choices[0].text + "\n"
+            // conversation_history = conversation_history + "User: " + context.activity.text + "\nChatbot: " + data.choices[0].text + "\n"
            
-            const replyText = `${ data.choices[0].text }`;
-            // const replyText = `Echox: ${ context.activity.text }`;
+            // const replyText = `${ data.choices[0].text }`;
+            const replyText = `Echox: ${ context.activity.text }`;
             await context.sendActivity(MessageFactory.text(replyText));
             // By calling next() you ensure that the next BotHandler is run.
             await next();
