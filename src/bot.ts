@@ -71,10 +71,11 @@ export class EchoBot extends ActivityHandler {
             // console.log(data.choices[0].text);
 
             conversation_history = conversation_history + "User: " + context.activity.text + "\nChatbot: " + data.choices[0].text + "\n"
-           
-            const replyText = `${ data.choices[0].text }`;
+            let wordCount = conversation_history.split(" ").length;
+            const replyText = `${ data.choices[0].text } (${wordCount} words))`;
             // const replyText = `Echox: ${ context.activity.text } value: ${ context.activity.value }`;
-            await context.sendActivity(MessageFactory.text(conversation_history));
+            await context.sendActivity(MessageFactory.text(replyText));
+            
             // By calling next() you ensure that the next BotHandler is run.
             await next();
         });
