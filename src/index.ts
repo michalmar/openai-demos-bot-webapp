@@ -78,107 +78,107 @@ server.get('/', (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.write(`
     
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <script
-        crossorigin="anonymous"
-        src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"
-        ></script>
-        <style>
-        html,
-        body {
-            height: 100%;
-            background-image: linear-gradient(slategrey, darkslategrey);
-            color: antiquewhite;
-            font-family: 'Segoe UI', Calibri, sans-serif;
-        }
+<!DOCTYPE html>
+<html>
+  <head>
+    <script
+      crossorigin="anonymous"
+      src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"
+    ></script>
+    <style>
+      html,
+      body {
+          height: 100%;
+          background-image: linear-gradient(slategrey, darkslategrey);
+          color: antiquewhite;
+          font-family: 'Segoe UI', Calibri, sans-serif;
+      }
 
-        body {
-            padding-left: 5px;
-        }
+      body {
+        padding-left: 5px;
+      }
 
-        #webchat {
-            height: 85%;
-            width: 100%;
-        }
-        .webchat__stacked-layout__main{
-            white-space: break-spaces;
-            
-        }
-        .webchat__stacked-layout--from-user{
-            background-color: rgba(70, 130, 180, .2);
-        }
+      #webchat {
+        height: 85%;
+        width: 100%;
+      }
+      .webchat__stacked-layout__main{
+        white-space: break-spaces;
         
-        </style>
-    </head>
-    <body>
-        
-        <h1><img src='https://logos-world.net/wp-content/uploads/2021/02/Microsoft-Azure-Emblem.png' height="40">Azure OpenAI Service demo</h1>
-        <pre>version 20230131</pre>
-        <div style="" id="webchat" role="main"></div>
-        <script>
-        // Set  the CSS rules.
-        const styleSet = window.WebChat.createStyleSet({
-            bubbleBackground: 'transparent',
-            bubbleBorderColor: 'darkslategrey',
-            bubbleBorderRadius: 5,
-            bubbleBorderStyle: 'solid',
-            bubbleBorderWidth: 0,
-            bubbleTextColor: 'antiquewhite',
+      }
+      .webchat__stacked-layout--from-user{
+        background-color: rgba(70, 130, 180, .2);
+      }
+      
+    </style>
+  </head>
+  <body>
+    
+    <h1><img src='https://logos-world.net/wp-content/uploads/2021/02/Microsoft-Azure-Emblem.png' height="40">Azure OpenAI Service demo</h1>
+    <pre>version 20230131 - GPT3.5 (ChatGPT-like) - M</pre>
+    <div style="" id="webchat" role="main"></div>
+    <script>
+      // Set  the CSS rules.
+      const styleSet = window.WebChat.createStyleSet({
+          bubbleBackground: 'transparent',
+          bubbleBorderColor: 'darkslategrey',
+          bubbleBorderRadius: 5,
+          bubbleBorderStyle: 'solid',
+          bubbleBorderWidth: 0,
+          bubbleTextColor: 'antiquewhite',
 
-            userAvatarBackgroundColor: 'rgba(70, 130, 180, .3)',
-            bubbleFromUserBackground: 'transparent', 
-            bubbleFromUserBorderColor: '#E6E6E6',
-            bubbleFromUserBorderRadius: 5,
-            bubbleFromUserBorderStyle: 'solid',
-            bubbleFromUserBorderWidth: 0,
-            bubbleFromUserTextColor: 'antiquewhite',
+          userAvatarBackgroundColor: 'rgba(70, 130, 180, .3)',
+          bubbleFromUserBackground: 'transparent', 
+          bubbleFromUserBorderColor: '#E6E6E6',
+          bubbleFromUserBorderRadius: 5,
+          bubbleFromUserBorderStyle: 'solid',
+          bubbleFromUserBorderWidth: 0,
+          bubbleFromUserTextColor: 'antiquewhite',
 
-            notificationText: 'white',
+          notificationText: 'white',
 
-            bubbleMinWidth: 400,
-            bubbleMaxWidth: 720,
+          bubbleMinWidth: 400,
+          bubbleMaxWidth: 720,
 
-            botAvatarBackgroundColor: 'antiquewhite',
-            avatarBorderRadius: 2,
-            avatarSize: 40,
+          botAvatarBackgroundColor: 'antiquewhite',
+          avatarBorderRadius: 2,
+          avatarSize: 40,
 
-            rootHeight: '100%',
-            rootWidth: '100%',
-            backgroundColor: 'rgba(70, 130, 180, .2)',
+          rootHeight: '100%',
+          rootWidth: '100%',
+          backgroundColor: 'rgba(70, 130, 180, .2)',
 
-            hideUploadButton: 'true'
-        });
+          hideUploadButton: 'true'
+      });
 
-        // After generated, you can modify the CSS rules.
-        // Change font family and weight. 
-        styleSet.textContent = {
-            ...styleSet.textContent,
-            fontWeight: 'regular'
-        };
+      // After generated, you can modify the CSS rules.
+      // Change font family and weight. 
+      styleSet.textContent = {
+          ...styleSet.textContent,
+          fontWeight: 'regular'
+      };
 
-        // Set the avatar options. 
-        const avatarOptions = {
-            botAvatarInitials: '.',
-            userAvatarInitials: 'Me',
-            botAvatarImage: 'https://dwglogo.com/wp-content/uploads/2019/03/1600px-OpenAI_logo-1024x705.png',
-            
-            };
+    // Set the avatar options. 
+      const avatarOptions = {
+          botAvatarInitials: '.',
+          userAvatarInitials: 'Me',
+          botAvatarImage: 'https://dwglogo.com/wp-content/uploads/2019/03/1600px-OpenAI_logo-1024x705.png',
+          
+          };
 
-        window.WebChat.renderWebChat(
-            {
-            directLine: window.WebChat.createDirectLine({
-                token: 'F6Oqh7KxG2s.hVaK5reI6KLfaF_BAbs4m5h2jfUTq8OYkS_E3tpm0ys'
-            }),
-            styleSet, styleOptions: avatarOptions
-            },
-            document.getElementById('webchat')
-        );
-        </script>
-        
-    </body>
-    </html>
+      window.WebChat.renderWebChat(
+        {
+          directLine: window.WebChat.createDirectLine({
+            token: 'F6Oqh7KxG2s.hVaK5reI6KLfaF_BAbs4m5h2jfUTq8OYkS_E3tpm0ys'
+          }),
+          styleSet, styleOptions: avatarOptions
+        },
+        document.getElementById('webchat')
+      );
+    </script>
+      
+  </body>
+</html>
     `);
     res.end();
 
