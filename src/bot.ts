@@ -74,7 +74,7 @@ export class EchoBot extends ActivityHandler {
            
             const replyText = `${ data.choices[0].text }`;
             // const replyText = `Echox: ${ context.activity.text } value: ${ context.activity.value }`;
-            await context.sendActivity(MessageFactory.text(replyText));
+            await context.sendActivity(MessageFactory.text(conversation_history));
             // By calling next() you ensure that the next BotHandler is run.
             await next();
         });
@@ -82,6 +82,8 @@ export class EchoBot extends ActivityHandler {
         this.onMembersAdded(async (context, next) => {
             const membersAdded = context.activity.membersAdded;
             const welcomeText = 'Hello and welcome!';
+            // delete converstaion history
+            conversation_history = ""
             for (const member of membersAdded) {
                 if (member.id !== context.activity.recipient.id) {
                     await context.sendActivity(MessageFactory.text(welcomeText, welcomeText));
