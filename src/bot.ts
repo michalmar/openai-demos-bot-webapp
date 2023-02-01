@@ -22,7 +22,10 @@ export class EchoBot extends ActivityHandler {
                 {
                     text: string;
                 }
-            ]
+            ],
+            usage: {
+                total_tokens: number;
+            }
         }
 
         let prompt = `
@@ -72,7 +75,7 @@ export class EchoBot extends ActivityHandler {
 
             conversation_history = conversation_history + "User: " + context.activity.text + "\nChatbot: " + data.choices[0].text + "\n"
             let wordCount = tmp_prompt.split(" ").length;
-            const replyText = `${ data.choices[0].text } (${wordCount} words))`;
+            const replyText = `${ data.choices[0].text } [~  ${data.usage.total_tokens} tokens]`;
             // const replyText = `Echox: ${ context.activity.text } value: ${ context.activity.value }`;
             await context.sendActivity(MessageFactory.text(replyText));
             
