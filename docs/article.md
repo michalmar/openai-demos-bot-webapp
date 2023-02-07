@@ -22,7 +22,13 @@ Použité služby a nástroje:
 
 ## Architektura / Návrh řešení
 
-TODO: obrazek
+```mermaid
+graph TD;
+webapp(Web UI & Bot\n hosting) -- query --> bot;
+bot((Bot Service)) -- response --> webapp;
+bot <-->  oai(OpenAI service);
+
+```
 
 ## Implementace
 
