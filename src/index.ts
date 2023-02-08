@@ -169,7 +169,7 @@ server.get('/', (req, res) => {
       window.WebChat.renderWebChat(
         {
           directLine: window.WebChat.createDirectLine({
-            token: 'F6Oqh7KxG2s.hVaK5reI6KLfaF_BAbs4m5h2jfUTq8OYkS_E3tpm0ys'
+            token: '` + process.env.DIRECT_LINE_TOKEN + `'
           }),
           styleSet, styleOptions: avatarOptions
         },
