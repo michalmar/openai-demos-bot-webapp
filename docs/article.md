@@ -32,11 +32,19 @@ bot <-->  oai(OpenAI service);
 
 ## Implementace
 
-Postup je jednoduchý. Budeme využívat maximálně připravených template a příkladů, které jsou k dispozici na ####TODO: ####. 
+Postup je jednoduchý. Budeme maximálně využívat připravených template a příkladů,  
+
+### Vytvoření OpenAI služby
 
 V prním kroku vytvoříme OpenAI službu - k té je potřeba [vyplnit formulář](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUOFA5Qk1UWDRBMjg0WFhPMkIzTzhKQ1dWNyQlQCN0PWcu). V rámci této služby máme přístup na Azure OpenAI studio, kde můžeme začít výběrem a deploymentem modelu - `text-davinci-003`, což je model GPT3.5. Zároveň nabízí možnost "hracího hřiště" (playground), kde můžete modely testovat a zkoušet taky vlastní prompty.
 
-Druhý krok je tvorba vlastního bota v rámci Bot Frameworku, resp. vyjdeme z template pro jednoduchého web chatbota - [echo bot](https://github.com/microsoft/BotBuilder-Samples/tree/main/samples/typescript_nodejs/02.echo-bot). V souboru `bot.js` je vidět vlastní logika chat aplikace, my se zaměříme na `onMessage` metodu, která reaguje na příchod zprávy od uživatele.
+![azure openai playground](./img/oai-playground.png)
+
+### Vytvoření chatbota - úprava kódu
+
+Druhý krok je tvorba vlastního bota v rámci Bot Frameworku, resp. vyjdeme z template pro jednoduchého web chatbota - [echo bot](https://github.com/microsoft/BotBuilder-Samples/tree/main/samples/typescript_nodejs/02.echo-bot). Já jsem si vybral JavaScript/TypeScript, ale můžete najít i příklad pro Python nebo C#.
+
+V souboru `bot.ts` je vidět vlastní logika chat aplikace, my se zaměříme na `onMessage` metodu, která reaguje na příchod zprávy od uživatele.
 
 ```javascript
 this.onMessage(async (context, next) => {
@@ -47,7 +55,7 @@ this.onMessage(async (context, next) => {
 });
 ```
 
-My tuto metodu upravíme tak, že uživatelský vstup (dotaz nebo povel) v proměnné `context.activity.text`, pošleme pro získání odpovědi do OpenAI služby:
+My tuto metodu upravíme tak, že uživatelský vstup (dotaz nebo povel) v proměnné `context.activity.text`, pošleme pro získání odpovědi do OpenAI služby a následně odpověď z OpenAI použijeme v odpovědi uživateli (`data.choices[0].text`):
 
 ```javascript
 this.onMessage(async (context, next) => {
@@ -72,7 +80,7 @@ Tím ale ještě neznikne chatbot, kterého bychom chtěli - chybí nám dvě z�
 - chatbot osobnost - prompt
 - uchování kontextu komunikace
 
-Jak na to?
+**Jak na to?**
 
 Práce s OpenAI textovými modely spočívá hlavně ve správném nastavení a vyladění promptu (více ####TODO). Pro našeho chatbota použijeme prompt:
 
@@ -124,8 +132,82 @@ this.onMessage(async (context, next) => {
 });
 ```
 
-Takového chatbota můžeme vyzkoušet lokálně v Bot Framework Emulator: ####TODO: linky a priklad
+Takového chatbota můžeme vyzkoušet lokálně v [Bot Framework Emulator](https://github.com/microsoft/BotFramework-Emulator):
 
-Další krok, deployment do Azure.
+![bot framework emulator](./img/bot-emu1.png)
 
-####TODO:
+### Deployment do Azure
+
+Když jsme otestovali, že nás chatbot poslouchá a odpovídá v lokálním prostředí, můžeme přistoupit k dalšímu kroku a to je  deployment do Azure. To děláme ze dvou důvodů:
+
+1. potřebujeme aby byla služba přístupná odkudkoli 
+1. chceme mít možnost pustit našeho chatbota na více kanálech
+
+V případě, že používáme k vývoji [VS Code](https://code.visualstudio.com/) (což vřele doporučuju), můžeme využít rozšíření pro práci s Azure Web App k samotnému (1-click) deploymentu.
+
+![vscode](./img/vscode.png)
+
+To je dobré pro jednorázové testování, pro snažší iterativní vývoj doporučuju využít možnosti [automatického deploymentu do Azure Web App pomocí GitHub Actions](https://learn.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment?tabs=github).
+
+### Konfigurace Azure / Bot Service
+
+Bot jako takový (engine) je nyní již hostovaný v Azure - zbývá nám ještě vystavit jej pomocí [Azure Bot Service](https://portal.azure.com/#create/Microsoft.AzureBot) a získat tak přístup k více kanálů bez nutnosti změny kódu.
+
+Stačí zadat adresu URL web aplikace vytvořené v minulém kroce do nastavení Bot service - taková URL je FQDN dané aplikace plus `api/messages`, tzn. vypadá nějak takto:
+
+```url
+https://YOUR-WEB-APP.azurewebsites.net/api/messages
+```
+
+![bot service](./img/bot-service.png)
+
+Pokud vše bylo správně, můžeme rovnou otestovat v rámci Web Chat v rámci bot service služby přímo na Azure Portále:
+
+![web chat test](./img/bot-service-test.png)
+
+Tímto jsme získali přístpu k použítí hned několika kanálů: Web Chat, Microsoft Teams, Facebook Messenger, Slack, Twilio SMS,... (celý seznam [zde](https://learn.microsoft.com/en-us/azure/bot-service/bot-service-channels-reference?view=azure-bot-service-4.0))
+
+
+### Fronted / Webová aplikace
+
+Teď když nám chatbot funguje a je deployovaný v Azure, můžeme vyzoušet nejčastější integrace do webové stránky. Nejjednodušší možnost je, že můžete si vygenrovat integraci pomocí `iframe` a tento kód pak jen vložit do vaší HTML stránky.
+
+```html
+<iframe src='https://webchat.botframework.com/embed/YOUR-BOT-NAME?s=YOUR_SECRET_HERE'  style='min-width: 400px; width: 100%; min-height: 500px;'></iframe>
+```
+
+Další varianta, je že přímo využijeme integraci WebChat do stránky - více [zde](https://learn.microsoft.com/en-us/azure/bot-service/bot-builder-webchat-overview?view=azure-bot-service-4.0) a zdroj je na: [https://github.com/microsoft/BotFramework-WebChat](https://github.com/microsoft/BotFramework-WebChat/tree/main/samples/01.getting-started/a.full-bundle). 
+
+Ve zkratce se jedná o JS knihovny, které dovolují jednoduchou integraci a další úpravy vzhledu:
+
+```html
+<!DOCTYPE html>
+<html>
+   <body>
+      <div id="webchat" role="main"></div>
+      <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+      <script>
+         window.WebChat.renderWebChat(
+            {
+               directLine: window.WebChat.createDirectLine({
+                  token: 'YOUR_DIRECT_LINE_TOKEN'
+               }),
+               userID: 'YOUR_USER_ID'
+            },
+            document.getElementById('webchat')
+         );
+      </script>
+   </body>
+</html>
+```
+
+Kde `YOUR_DIRECT_LINE_TOKEN` je token pro direct line komunikaci v rámci Bot Service a `YOUR_USER_ID` vámi zvolená identifikace
+
+![direct line token](./img/direct-line.png)
+
+Taková stránka pak obsahuje našeho právě připraveného chatbota. WebChat framework nabízí spoustu možností s úpravou vzhledu, takže můžete měnit téměř cokoli od barev po zpbrazení indikatorů členů konverzace - více [zde](https://learn.microsoft.com/en-us/azure/bot-service/bot-builder-webchat-customization?view=azure-bot-service-4.0).
+
+Takže náš chatbot může vypadata třeba takto:
+
+####TODO
+
