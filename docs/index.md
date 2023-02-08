@@ -170,12 +170,13 @@ Pokud vše bylo správně, můžeme rovnou otestovat v rámci Web Chat v rámci 
 Tímto jsme získali přístpu k použítí hned několika kanálů: Web Chat, Microsoft Teams, Facebook Messenger, Slack, Twilio SMS,... (celý seznam [zde](https://learn.microsoft.com/en-us/azure/bot-service/bot-service-channels-reference?view=azure-bot-service-4.0))
 
 
-### Fronted / Webová aplikace
+### Front-end / Webová aplikace
 
 Teď když nám chatbot funguje a je deployovaný v Azure, můžeme vyzoušet nejčastější integrace do webové stránky. Nejjednodušší možnost je, že můžete si vygenrovat integraci pomocí `iframe` a tento kód pak jen vložit do vaší HTML stránky.
 
 ```html
-<iframe src='https://webchat.botframework.com/embed/YOUR-BOT-NAME?s=YOUR_SECRET_HERE'  style='min-width: 400px; width: 100%; min-height: 500px;'></iframe>
+<iframe src='https://webchat.botframework.com/embed/YOUR-BOT-NAME?s=YOUR_SECRET_HERE'  style='min-width: 400px; width: 100%; min-height: 500px;'>
+</iframe>
 ```
 
 Další varianta, je že přímo využijeme integraci WebChat do stránky - více [zde](https://learn.microsoft.com/en-us/azure/bot-service/bot-builder-webchat-overview?view=azure-bot-service-4.0) a zdroj je na: [https://github.com/microsoft/BotFramework-WebChat](https://github.com/microsoft/BotFramework-WebChat/tree/main/samples/01.getting-started/a.full-bundle). 
