@@ -1,7 +1,7 @@
 # Jednoduchý Chatbot s pomocí Azure OpenAI služby
 
 ## Úvod
-Chatboty jsou počítačové programy, které slouží k vytváření interakce mezi lidmi a počítači. OpenAI text-davinci je moderní jazykový model založený na neuronových sítích, který byl vyvinut s cílem porozumět lidskému jazyku. Tento článek se zaměří na to, jak vytvořit účinný chatbot založený na OpenAI text-davinci modelu.
+Chatboty jsou počítačové programy, které slouží k vytváření interakce mezi lidmi a počítači. OpenAI `text-davinci` je moderní jazykový model založený na neuronových sítích, který byl vyvinut s cílem porozumět lidskému jazyku. Tento článek se zaměří na to, jak vytvořit účinný chatbot založený na [Azure OpenAI](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/) `text-davinci` modelu.
 
 V rodině OpenAI je dnes k dispozici monho modelů, které se navzájem liší svým zaměřením (přirozený jazyk, kód, obrázky), ale také komplexitou a tím co dokážou. Pěkný úvod a ukázka shrnutí (sumarizace) textu můžete najít na [blogu ](https://tomaskubica.cz/post/2023/azure-openai-service-sumarizace-textu-v-cestine/) Tomáše Kubici.
 
@@ -213,3 +213,8 @@ Takže náš chatbot může vypadata třeba takto:
 
 ![web app chat bot](./img/webapp-final.png)
 
+## Závěr
+
+Toto byla ukázka, jak vytvořit jednoduchého chatbota, který ale zná odpověd na téměř jakokoli otázku :-), protože používá výkonný model `text-davinci-003` z Azure OpenAI služby. 
+
+Pokud chcete, můžete si to sami vyzkoušet! Celý zdrojový kód je k dispozici na mém GitHubu: [https://github.com/michalmar/openai-demos-bot-webapp](https://github.com/michalmar/openai-demos-bot-webapp). Abyste mohli používat Azure OpenAI službu, je nutné o přístup nejdříve požádat - [formulář](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUOFA5Qk1UWDRBMjg0WFhPMkIzTzhKQ1dWNyQlQCN0PWcu). 
