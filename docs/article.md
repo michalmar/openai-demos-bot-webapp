@@ -3,17 +3,19 @@
 ## Úvod
 Chatboty jsou počítačové programy, které slouží k vytváření interakce mezi lidmi a počítači. OpenAI text-davinci je moderní jazykový model založený na neuronových sítích, který byl vyvinut s cílem porozumět lidskému jazyku. Tento článek se zaměří na to, jak vytvořit účinný chatbot založený na OpenAI text-davinci modelu.
 
-V rodině OpenAI je dnes k dispozici monho modelů, které se navzájem liší svým zaměřením (přirozený jazyk, kód, obrázky), ale také komplexitou a tím co dokážou. ####TODO: odkaz Tomáš Kubica článek ####
+V rodině OpenAI je dnes k dispozici monho modelů, které se navzájem liší svým zaměřením (přirozený jazyk, kód, obrázky), ale také komplexitou a tím co dokážou. Pěkný úvod a ukázka shrnutí (sumarizace) textu můžete najít na [blogu ](https://tomaskubica.cz/post/2023/azure-openai-service-sumarizace-textu-v-cestine/) Tomáše Kubici.
+
+## Cíl
 
 Cílem je vytvořit jednoduchý chatbot s použitím minimálního úsilí, tzn. budeme využívat služby a komponenty, které jsou již v zásadě připravené.
 
-Jaké komponenty takový chatbot bude mít? 
+**Jaké komponenty takový chatbot bude mít?**
 
 Chatovací logika - srdce chatbota je ve schopnosti reagovat na uživatelské podněty, dotazy a požadavky. Měl by pochopit na co se uživatel ptá, v případě nejasností se doptat na doplňující informace a poskytnout (pokud možno správnou) odpověď. Tady právě budeme spoléhat na Azure OpenAI službu.
 
 Front-end, resp. GUI, bude nejspíš webová aplikace, která zprostředkuje komunikaci uživatele s vlastním chatbotem. Nicméně, často takový chatbot může mít takových interfaců více: část uživatelů komunikuje přes webové stránky, část může používat aplikaci v mobilu a další část může například komunikovat v rámci Teams platformy. To znamená, že chatbot využívá více kanalů - idealní samozřejmě je, pokud nemusím upravovat bot pro každý kanál zvlášť. 
 
-Komunikaci skrz kanály bude poskytovat Azure Bot Service, které umí vystavit a řídit komunikaci s různými kanály (Web/Direct, Teams, ale třeba taky Email, SMS, Slack atp.) #### TODO: odkazy #####
+Komunikaci skrz kanály bude poskytovat [Azure Bot Service](https://azure.microsoft.com/en-us/products/bot-services/#features), které umí vystavit a řídit komunikaci s různými kanály (Web/Direct, Teams, ale třeba taky Email, SMS, Slack atp. - více [zde](https://learn.microsoft.com/en-us/azure/bot-service/bot-service-channels-reference?view=azure-bot-service-4.0))
 
 Použité služby a nástroje:
 - Azure OpenAI - srdce / logika chatbota
@@ -82,7 +84,7 @@ Tím ale ještě neznikne chatbot, kterého bychom chtěli - chybí nám dvě z�
 
 **Jak na to?**
 
-Práce s OpenAI textovými modely spočívá hlavně ve správném nastavení a vyladění promptu (více ####TODO). Pro našeho chatbota použijeme prompt:
+Práce s OpenAI textovými modely spočívá hlavně ve správném nastavení a vyladění promptu (více [zde](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/completions)). Pro našeho chatbota použijeme prompt:
 
 ```
 As an advanced chatbot, your primary goal is to assist users to the best of your ability. This may involve answering questions, providing helpful information, or completing tasks based on user input. In order to effectively assist users, it is important to be detailed and thorough in your responses. Use examples and evidence to support your points and justify your recommendations or solutions.
@@ -93,7 +95,7 @@ User: <user input>
 Chatbot:
 ```
 
-V první části je instrukce jak se model bude k zadanému textu chovat. ####TODO
+V první části je instrukce jak se model bude k zadanému textu chovat - dávat odpovědi včetně příkladů na podporu rozhodování, doplňování. Zde se může objevit ladění osobnosti například: "chovej se profesionálně".
 
 Pak náseleduje sekce `<conversation history>`, která drží historii konverzace a postupně ji doplňujeme o vstup a výstup chatbota. Tato část je důležitá proto, aby chat bot správně držel kontext komunikace.
 
@@ -209,5 +211,5 @@ Taková stránka pak obsahuje našeho právě připraveného chatbota. WebChat f
 
 Takže náš chatbot může vypadata třeba takto:
 
-####TODO
+![web app chat bot](./img/webapp-final.png)
 
