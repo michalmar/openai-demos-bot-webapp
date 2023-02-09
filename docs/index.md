@@ -26,9 +26,9 @@ Použité služby a nástroje:
 
 ```mermaid
 graph TD;
-webapp(Web UI & Bot\n hosting) -- query --> bot;
-bot((Bot Service)) -- response --> webapp;
-bot <-->  oai(OpenAI service);
+   webapp(Web UI & Bot\n hosting) -- query --> bot;
+   bot((Bot Service)) -- response --> webapp;
+   bot <-->  oai(OpenAI service);
 
 ```
 
