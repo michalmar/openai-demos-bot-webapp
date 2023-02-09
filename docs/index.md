@@ -24,13 +24,17 @@ Použité služby a nástroje:
 
 ## Architektura / Návrh řešení
 
+Architektura je velmi jednoduchá, pro hostování bota slouží Azure Web App (App Service), která zároveň hostuje i webový forntend/aplikaci. A ta komunikuje pomocí Bot Service (direct channel). Uživatelské vstupy jsou tedy předávány do Azure OpenAI jako jednochué volání API.
+
 ```mermaid
 graph TD;
-   webapp(Web UI & Bot\n hosting) -- query --> bot;
+   webapp(Web UI and Bot) -- query --> bot;
    bot((Bot Service)) -- response --> webapp;
    bot <-->  oai(OpenAI service);
 
 ```
+
+Pojďme se teď podívat na implementaci takového řešení.
 
 ## Implementace
 
