@@ -34,6 +34,15 @@ graph TD;
 
 ```
 
+```mermaid
+graph TD;
+    base -- inherit and patch --> prod;
+    base -- inherit and patch --> staging;
+    prod -- inherit and patch --> project1prod[Project 1 prod cluster];
+    prod -- inherit and patch --> project2prod[Project 2 prod cluster];
+    staging -- inherit and patch --> project1staging[Project 1 staging cluster];
+```
+
 Pojďme se teď podívat na implementaci takového řešení.
 
 ## Implementace
