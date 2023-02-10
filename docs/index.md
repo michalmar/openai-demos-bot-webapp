@@ -3,7 +3,7 @@
 ## Úvod
 Chatboty jsou počítačové programy, které slouží k vytváření interakce mezi lidmi a počítači. OpenAI `text-davinci` je moderní jazykový model založený na neuronových sítích, který byl vyvinut s cílem porozumět lidskému jazyku. Tento článek se zaměří na to, jak vytvořit účinný chatbot založený na [Azure OpenAI](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/) `text-davinci` modelu.
 
-V rodině OpenAI je dnes k dispozici monho modelů, které se navzájem liší svým zaměřením (přirozený jazyk, kód, obrázky), ale také komplexitou a tím co dokážou. Pěkný úvod a ukázka shrnutí (sumarizace) textu můžete najít na [blogu ](https://tomaskubica.cz/post/2023/azure-openai-service-sumarizace-textu-v-cestine/) Tomáše Kubici.
+V rodině OpenAI je dnes k dispozici mnoho modelů, které se navzájem liší svým zaměřením (přirozený jazyk, kód, obrázky), ale také komplexitou a tím co dokážou. Pěkný úvod a ukázka shrnutí (sumarizace) textu můžete najít na [blogu ](https://tomaskubica.cz/post/2023/azure-openai-service-sumarizace-textu-v-cestine/) Tomáše Kubici.
 
 ## Cíl
 
@@ -13,7 +13,7 @@ Cílem je vytvořit jednoduchý chatbot s použitím minimálního úsilí, tzn.
 
 Chatovací logika - srdce chatbota je ve schopnosti reagovat na uživatelské podněty, dotazy a požadavky. Měl by pochopit na co se uživatel ptá, v případě nejasností se doptat na doplňující informace a poskytnout (pokud možno správnou) odpověď. Tady právě budeme spoléhat na Azure OpenAI službu.
 
-Front-end, resp. GUI, bude nejspíš webová aplikace, která zprostředkuje komunikaci uživatele s vlastním chatbotem. Nicméně, často takový chatbot může mít takových interfaců více: část uživatelů komunikuje přes webové stránky, část může používat aplikaci v mobilu a další část může například komunikovat v rámci Teams platformy. To znamená, že chatbot využívá více kanalů - idealní samozřejmě je, pokud nemusím upravovat bot pro každý kanál zvlášť. 
+Front-end, resp. GUI, bude nejspíš webová aplikace, která zprostředkuje komunikaci uživatele s vlastním chatbotem. Nicméně, často takový chatbot může mít takových interfaců více: část uživatelů komunikuje přes webové stránky, část může používat aplikaci v mobilu a další část může například komunikovat v rámci Teams platformy. To znamená, že chatbot využívá více kanálů - ideální samozřejmě je, pokud nemusím upravovat bot pro každý kanál zvlášť.
 
 Komunikaci skrz kanály bude poskytovat [Azure Bot Service](https://azure.microsoft.com/en-us/products/bot-services/#features), které umí vystavit a řídit komunikaci s různými kanály (Web/Direct, Teams, ale třeba taky Email, SMS, Slack atp. - více [zde](https://learn.microsoft.com/en-us/azure/bot-service/bot-service-channels-reference?view=azure-bot-service-4.0))
 
@@ -24,7 +24,7 @@ Použité služby a nástroje:
 
 ## Architektura / Návrh řešení
 
-Architektura je velmi jednoduchá, pro hostování bota slouží Azure Web App (App Service), která zároveň hostuje i webový forntend/aplikaci. A ta komunikuje pomocí Bot Service (direct channel). Uživatelské vstupy jsou tedy předávány do Azure OpenAI jako jednochué volání API.
+Architektura je velmi jednoduchá, pro hostování bota slouží Azure Web App (App Service), která zároveň hostuje i webový front-end/aplikaci. A ta komunikuje pomocí Bot Service (direct channel). Uživatelské vstupy jsou tedy předávány do Azure OpenAI jako jednouché volání API.
 
 ![architecture](./img/arch.png)
 
@@ -36,7 +36,7 @@ Postup je jednoduchý. Budeme maximálně využívat připravených template a p
 
 ### Vytvoření OpenAI služby
 
-V prním kroku vytvoříme OpenAI službu - k té je potřeba [vyplnit formulář](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUOFA5Qk1UWDRBMjg0WFhPMkIzTzhKQ1dWNyQlQCN0PWcu). V rámci této služby máme přístup na Azure OpenAI studio, kde můžeme začít výběrem a deploymentem modelu - `text-davinci-003`, což je model GPT3.5. Zároveň nabízí možnost "hracího hřiště" (playground), kde můžete modely testovat a zkoušet taky vlastní prompty.
+V prvním kroku vytvoříme OpenAI službu - k té je potřeba [vyplnit formulář](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUOFA5Qk1UWDRBMjg0WFhPMkIzTzhKQ1dWNyQlQCN0PWcu). V rámci této služby máme přístup na Azure OpenAI studio, kde můžeme začít výběrem a deploymentem modelu - `text-davinci-003`, což je model GPT3.5. Zároveň nabízí možnost "hracího hřiště" (playground), kde můžete modely testovat a zkoušet taky vlastní prompty.
 
 ![azure openai playground](./img/oai-playground.png)
 
@@ -76,7 +76,7 @@ this.onMessage(async (context, next) => {
 });
 ```
 
-Tím ale ještě neznikne chatbot, kterého bychom chtěli - chybí nám dvě základní věci:
+Tím ale ještě nevznikne chatbot, kterého bychom chtěli - chybí nám dvě základní věci:
 - chatbot osobnost - prompt
 - uchování kontextu komunikace
 
@@ -95,7 +95,7 @@ Chatbot:
 
 V první části je instrukce jak se model bude k zadanému textu chovat - dávat odpovědi včetně příkladů na podporu rozhodování, doplňování. Zde se může objevit ladění osobnosti například: "chovej se profesionálně".
 
-Pak náseleduje sekce `<conversation history>`, která drží historii konverzace a postupně ji doplňujeme o vstup a výstup chatbota. Tato část je důležitá proto, aby chat bot správně držel kontext komunikace.
+Pak následuje sekce `<conversation history>`, která drží historii konverzace a postupně ji doplňujeme o vstup a výstup chatbota. Tato část je důležitá proto, aby chat bot správně držel kontext komunikace.
 
 Dále je `User: <user input>`, za což doplníme uživatelský vstup.
 
@@ -147,7 +147,7 @@ V případě, že používáme k vývoji [VS Code](https://code.visualstudio.com
 
 ![vscode](./img/vscode.png)
 
-To je dobré pro jednorázové testování, pro snažší iterativní vývoj doporučuju využít možnosti [automatického deploymentu do Azure Web App pomocí GitHub Actions](https://learn.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment?tabs=github).
+To je dobré pro jednorázové testování, pro jednodušší iterativní vývoj doporučuju využít možnosti [automatického deploymentu do Azure Web App pomocí GitHub Actions](https://learn.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment?tabs=github).
 
 ### Konfigurace Azure / Bot Service
 
@@ -165,12 +165,12 @@ Pokud vše bylo správně, můžeme rovnou otestovat v rámci Web Chat v rámci 
 
 ![web chat test](./img/bot-service-test.png)
 
-Tímto jsme získali přístpu k použítí hned několika kanálů: Web Chat, Microsoft Teams, Facebook Messenger, Slack, Twilio SMS,... (celý seznam [zde](https://learn.microsoft.com/en-us/azure/bot-service/bot-service-channels-reference?view=azure-bot-service-4.0))
+Tímto jsme získali přístupu k použití hned několika kanálů: Web Chat, Microsoft Teams, Facebook Messenger, Slack, Twilio SMS,... (celý seznam [zde](https://learn.microsoft.com/en-us/azure/bot-service/bot-service-channels-reference?view=azure-bot-service-4.0))
 
 
 ### Front-end / Webová aplikace
 
-Teď když nám chatbot funguje a je deployovaný v Azure, můžeme vyzoušet nejčastější integrace do webové stránky. Nejjednodušší možnost je, že můžete si vygenrovat integraci pomocí `iframe` a tento kód pak jen vložit do vaší HTML stránky.
+Teď když nám chatbot funguje a je deployovaný v Azure, můžeme vyzkoušet nejčastější integrace do webové stránky. Nejjednodušší možnost je, že můžete si vygenerovat integraci pomocí `iframe` a tento kód pak jen vložit do vaší HTML stránky.
 
 ```html
 <iframe src='https://webchat.botframework.com/embed/YOUR-BOT-NAME?s=YOUR_SECRET_HERE'  style='min-width: 400px; width: 100%; min-height: 500px;'>
@@ -206,9 +206,9 @@ Kde `YOUR_DIRECT_LINE_TOKEN` je token pro direct line komunikaci v rámci Bot Se
 
 ![direct line token](./img/direct-line.png)
 
-Taková stránka pak obsahuje našeho právě připraveného chatbota. WebChat framework nabízí spoustu možností s úpravou vzhledu, takže můžete měnit téměř cokoli od barev po zpbrazení indikatorů členů konverzace - více [zde](https://learn.microsoft.com/en-us/azure/bot-service/bot-builder-webchat-customization?view=azure-bot-service-4.0).
+Taková stránka pak obsahuje našeho právě připraveného chatbota. WebChat framework nabízí spoustu možností s úpravou vzhledu, takže můžete měnit téměř cokoli od barev po zobrazení indikátorů členů konverzace - více [zde](https://learn.microsoft.com/en-us/azure/bot-service/bot-builder-webchat-customization?view=azure-bot-service-4.0).
 
-Takže náš chatbot může vypadata třeba takto:
+Takže náš chatbot může vypadat třeba takto:
 
 ![web app chat bot](./img/webapp-final.png)
 
