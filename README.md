@@ -208,6 +208,14 @@ Where `YOUR_DIRECT_LINE_TOKEN` is the token for direct line communication within
 
 ![direct line token](./docs/img/direct-line.png)
 
+> Important!: When configuring the Web app it is a best practice (proabaly security must) to not to use your tokens/passwords directly in your code but use them as web application environmental variables / application settings. In fact, we use in our example (in this repo) four such variables you would need to setup / fill to make you application communicate correctly:
+>
+> `DIRECT_LINE_TOKEN`... setting from the Bot Service channel
+>
+> `OPENAI_API_KEY`...key for authentication to your Azure OpenAI service
+> 
+> `MicrosoftAppId` and `MicrosoftAppPassword` used when creating Bot Service for autentication to Azure resources (you can use your own Service Principal or leave default - more [here](https://learn.microsoft.com/en-us/azure/bot-service/provision-and-publish-a-bot?view=azure-bot-service-4.0&tabs=userassigned%2Ccsharp#plan-your-deployment))
+
 Such a page then contains our just-prepared chatbot. The WebChat framework offers a lot of customization options, so you can change almost anything from colors to the display of chat member indicators - more [here](https://learn.microsoft.com/en-us/azure/bot-service/bot-builder-webchat-customization?view=azure-bot-service-4.0).
 
 So our chatbot can look like this:
