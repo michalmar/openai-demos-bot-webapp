@@ -206,6 +206,14 @@ Kde `YOUR_DIRECT_LINE_TOKEN` je token pro direct line komunikaci v rámci Bot Se
 
 ![direct line token](./img/direct-line.png)
 
+> Důležité: Když konfigurujeme Web appku je zapotřebí (z pohledu bezpečnosti) nepoužívat tokeny/hesla přímo v kódu, ale odkazovat se na proměnné prostředí. V rámci tohoto příkladu používáme následující proměnné, které je potřeba správně nastavit v app settings:
+>
+> `DIRECT_LINE_TOKEN`... token k Bot Service kanálu
+>
+> `OPENAI_API_KEY`... klíč pro autentizaci k Azure OpenAI službě
+> 
+> `MicrosoftAppId` a `MicrosoftAppPassword` použité při vytváření Bot Service pro autentizaci k Azure zdrojům (můžete použít vlastního Service Principal nebo nechat vygenerovat jako default - více [zde](https://learn.microsoft.com/en-us/azure/bot-service/provision-and-publish-a-bot?view=azure-bot-service-4.0&tabs=userassigned%2Ccsharp#plan-your-deployment))
+
 Taková stránka pak obsahuje našeho právě připraveného chatbota. WebChat framework nabízí spoustu možností s úpravou vzhledu, takže můžete měnit téměř cokoli od barev po zobrazení indikátorů členů konverzace - více [zde](https://learn.microsoft.com/en-us/azure/bot-service/bot-builder-webchat-customization?view=azure-bot-service-4.0).
 
 Takže náš chatbot může vypadat třeba takto:
