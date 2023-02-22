@@ -65,7 +65,7 @@ export class EchoBot extends ActivityHandler {
             // construct request body
             const requestBody =     {
                 prompt: tmp_prompt
-                , max_tokens: 500
+                , max_tokens: 1500
                 , temperature: 0.7
                 // , presence_penalty: "0.0"
                 // , frequency_penalty: "0.0"
