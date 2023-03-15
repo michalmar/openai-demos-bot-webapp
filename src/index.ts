@@ -118,6 +118,7 @@ server.get('/', (req, res) => {
     <pre>version 20230131 - GPT3.5 (ChatGPT-like) - M</pre>
     <div style="" id="webchat" role="main"></div>
     <script>
+    (async function() {
       // Set  the CSS rules.
       const styleSet = window.WebChat.createStyleSet({
           bubbleBackground: 'transparent',
@@ -158,23 +159,29 @@ server.get('/', (req, res) => {
           fontWeight: 'regular'
       };
 
-    // Set the avatar options. 
+      // Set the avatar options. 
       const avatarOptions = {
           botAvatarInitials: '.',
           userAvatarInitials: 'Me',
           botAvatarImage: 'https://dwglogo.com/wp-content/uploads/2019/03/1600px-OpenAI_logo-1024x705.png',
           
           };
+      
+      const adapters = await window.WebChat.createDirectLineSpeechAdapters({
+        fetchCredentials: {
+          region: '` + process.env.DIRECT_LINE_SPEECH_REGION + `',
+          subscriptionKey: '` + process.env.DIRECT_LINE_SPEECH_TOKEN + `'
+        }
+      });
 
       window.WebChat.renderWebChat(
         {
-          directLine: window.WebChat.createDirectLine({
-            token: '` + process.env.DIRECT_LINE_TOKEN + `'
-          }),
+          ...adapters,
           styleSet, styleOptions: avatarOptions
         },
         document.getElementById('webchat')
       );
+    })().catch(err => console.error(err));
     </script>
       
   </body>
