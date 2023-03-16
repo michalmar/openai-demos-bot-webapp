@@ -177,7 +177,7 @@ server.get('/', (req, res) => {
       window.WebChat.renderWebChat(
         {
           ...adapters,
-          speechRecognitionLanguage: 'cs-CZ',
+          speechRecognitionLanguage: 'cs',
           styleSet, styleOptions: avatarOptions
         },
         document.getElementById('webchat')
