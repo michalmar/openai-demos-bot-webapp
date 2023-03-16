@@ -115,7 +115,7 @@ server.get('/', (req, res) => {
   <body>
     
     <h1><img src='https://logos-world.net/wp-content/uploads/2021/02/Microsoft-Azure-Emblem.png' height="40">Azure OpenAI Service demo</h1>
-    <pre>version 20230131 - GPT3.5 (ChatGPT-like) - M</pre>
+    <pre>version 20230316 - GPT3.5 (ChatGPT-like) - M</pre>
     <div style="" id="webchat" role="main"></div>
     <script>
     (async function() {
@@ -177,6 +177,7 @@ server.get('/', (req, res) => {
       window.WebChat.renderWebChat(
         {
           ...adapters,
+          speechRecognitionLanguage: 'cs-CZ',
           styleSet, styleOptions: avatarOptions
         },
         document.getElementById('webchat')
