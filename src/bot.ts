@@ -28,15 +28,24 @@ export class EchoBot extends ActivityHandler {
             }
         }
 
-        let prompt = `
-        As an advanced chatbot, your primary goal is to assist users to the best of your ability. This may involve answering questions, providing helpful information, or completing tasks based on user input. In order to effectively assist users, it is important to be detailed and thorough in your responses. Use examples and evidence to support your points and justify your recommendations or solutions.
+        // let prompt_old = `
+        // As an advanced chatbot, your primary goal is to assist users to the best of your ability. This may involve answering questions, providing helpful information, or completing tasks based on user input. In order to effectively assist users, it is important to be detailed and thorough in your responses. Use examples and evidence to support your points and justify your recommendations or solutions.
+
+        // <conversation history>
+
+        // User: <user input>
+        // Chatbot:
+        // `
+        // const url = "https://openaimma.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2022-12-01"
+        let prompt = `<|im_start|>system You are an AI assistant that helps people find information.<|im_end|>
 
         <conversation history>
 
-        User: <user input>
-        Chatbot:
-        `
-        const url = "https://openaimma.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2022-12-01"
+        <|im_start|>user <user input><|im_end|>
+
+        <|im_start|>assistant`
+        const url = "https://openaimmaus.openai.azure.com/openai/deployments/gpt-35-turbo/completions?api-version=2022-12-01"
+
        
         let conversation_history = ""
         
@@ -75,10 +84,10 @@ export class EchoBot extends ActivityHandler {
             const data = await postDataToEndpoint(url, requestBody, headers);
 
             // update conversation history
-            conversation_history = conversation_history + "User: " + context.activity.text + "\nChatbot: " + data.choices[0].text + "\n"
-            
+            //conversation_history = conversation_history + "User: " + context.activity.text + "\nChatbot: " + data.choices[0].text + "\n"
+            conversation_history = conversation_history + "<|im_start|>user " + context.activity.text + "<|im_end|>\n<|im_start|>assistant " + data.choices[0].text + "\n"
             // send response to user
-            const replyText = `${ data.choices[0].text } [~  ${data.usage.total_tokens} tokens]`;
+            const replyText = `${ data.choices[0].text.replace("<|im_end|>", "") } [~  ${data.usage.total_tokens} tokens]`;
             // const replyText = `Echox: ${ context.activity.text } value: ${ context.activity.value }`;
             await context.sendActivity(MessageFactory.text(replyText));
             
@@ -88,7 +97,7 @@ export class EchoBot extends ActivityHandler {
 
         this.onMembersAdded(async (context, next) => {
             const membersAdded = context.activity.membersAdded;
-            const welcomeText = 'Hello and welcome!';
+            const welcomeText = 'Hi, this is ChatGPT model! How can I help you?';
             // delete converstaion history
             conversation_history = ""
             for (const member of membersAdded) {
