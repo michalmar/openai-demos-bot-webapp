@@ -1,5 +1,8 @@
 # Simple Chatbot using Azure OpenAI service
 
+## UPDATE:
+> This repo now uses the `ChatGPT-turbo` model in Azure OpenAI service. Esssentially only Prompts slightly changed (due to the [ChatML](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/chatgpt?pivots=programming-language-chat-ml) syntax), rest of the code and logi remains. 
+
 ## Introduction
 Chatbots are computer programs that are used to create interaction between humans and computers. OpenAI `text-davinci` is a modern language model based on neural networks developed to understand human language. This article will focus on how to create an effective chatbot based on the [Azure OpenAI](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/) `text-davinci` model.
 
@@ -93,6 +96,17 @@ As an advanced chatbot, your primary goal is to assist users to the best of your
 
 User: <user input>
 Chatbot:
+```
+
+> ChatGPT version:
+> ```
+> <|im_start|>system As an advanced chatbot, your primary goal is to assist users to the best of your ability. This may involve answering questions, providing helpful information, or completing tasks based on user input. In order to effectively assist users, it is important to be detailed and thorough in your responses. Use examples and evidence to support your points and justify your recommendations or solutions.<|im_end|>
+>
+><conversation history>
+>
+><|im_start|>user <user input><|im_end|>
+>
+><|im_start|>assistant`
 ```
 
 In the first part, there is an instruction on how the model will behave to the entered text - giving answers including examples to support decision-making, completion. This is where personality tuning may appear as well, for example: behave professionally or firendly etc.

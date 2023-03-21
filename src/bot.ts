@@ -37,7 +37,7 @@ export class EchoBot extends ActivityHandler {
         // Chatbot:
         // `
         // const url = "https://openaimma.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2022-12-01"
-        let prompt = `<|im_start|>system You are an AI assistant that helps people find information.<|im_end|>
+        let prompt = `<|im_start|>system As an advanced chatbot, your primary goal is to assist users to the best of your ability. This may involve answering questions, providing helpful information, or completing tasks based on user input. In order to effectively assist users, it is important to be detailed and thorough in your responses. Use examples and evidence to support your points and justify your recommendations or solutions.<|im_end|>
 
         <conversation history>
 
