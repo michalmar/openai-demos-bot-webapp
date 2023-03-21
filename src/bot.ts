@@ -87,7 +87,7 @@ export class EchoBot extends ActivityHandler {
             //conversation_history = conversation_history + "User: " + context.activity.text + "\nChatbot: " + data.choices[0].text + "\n"
             conversation_history = conversation_history + "<|im_start|>user " + context.activity.text + "<|im_end|>\n<|im_start|>assistant " + data.choices[0].text + "\n"
             // send response to user
-            const replyText = `${ data.choices[0].text.replace("<|im_end|>", "") } [~  ${data.usage.total_tokens} tokens]`;
+            const replyText = `${ data.choices[0].text.replace("<|im_end|>", "") } \n[~  ${data.usage.total_tokens} tokens]`;
             // const replyText = `Echox: ${ context.activity.text } value: ${ context.activity.value }`;
             await context.sendActivity(MessageFactory.text(replyText));
             
