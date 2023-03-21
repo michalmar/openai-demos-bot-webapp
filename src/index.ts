@@ -89,15 +89,13 @@ server.get('/', (req, res) => {
       html,
       body {
           height: 100%;
-          background-image: linear-gradient( #343541,#525468);
+          background-image: linear-gradient(slategrey, darkslategrey);
           color: antiquewhite;
           font-family: 'Segoe UI', Calibri, sans-serif;
       }
-
       body {
         padding-left: 5px;
       }
-
       #webchat {
         height: 85%;
         width: 100%;
@@ -107,7 +105,7 @@ server.get('/', (req, res) => {
         
       }
       .webchat__stacked-layout--from-user{
-        background-color: rgba(32,33,35, .2);
+        background-color: rgba(70, 130, 180, .2);
       }
       
     </style>
@@ -115,10 +113,9 @@ server.get('/', (req, res) => {
   <body>
     
     <h1><img src='https://logos-world.net/wp-content/uploads/2021/02/Microsoft-Azure-Emblem.png' height="40">Azure OpenAI Service demo</h1>
-    <pre>version 20230320 | model: ChatGPT (turbo) | max_tokens: 1500 | temperature: 0.7 | Speech input enabled: true | Speech language: EN</pre> 
+    <pre>version 20230131 - GPT3.5 (ChatGPT-like) - M</pre>
     <div style="" id="webchat" role="main"></div>
     <script>
-    (async function() {
       // Set  the CSS rules.
       const styleSet = window.WebChat.createStyleSet({
           bubbleBackground: 'transparent',
@@ -127,62 +124,46 @@ server.get('/', (req, res) => {
           bubbleBorderStyle: 'solid',
           bubbleBorderWidth: 0,
           bubbleTextColor: 'antiquewhite',
-
-          userAvatarBackgroundColor: 'rgba(53, 55, 64, .3)',
+          userAvatarBackgroundColor: 'rgba(70, 130, 180, .3)',
           bubbleFromUserBackground: 'transparent', 
           bubbleFromUserBorderColor: '#E6E6E6',
           bubbleFromUserBorderRadius: 5,
           bubbleFromUserBorderStyle: 'solid',
           bubbleFromUserBorderWidth: 0,
           bubbleFromUserTextColor: 'antiquewhite',
-
           notificationText: 'white',
-
           bubbleMinWidth: 400,
           bubbleMaxWidth: 720,
-
           botAvatarBackgroundColor: 'antiquewhite',
           avatarBorderRadius: 2,
           avatarSize: 40,
-
           rootHeight: '100%',
           rootWidth: '100%',
           backgroundColor: 'rgba(70, 130, 180, .2)',
-
           hideUploadButton: 'true'
       });
-
       // After generated, you can modify the CSS rules.
       // Change font family and weight. 
       styleSet.textContent = {
           ...styleSet.textContent,
           fontWeight: 'regular'
       };
-
-      // Set the avatar options. 
+    // Set the avatar options. 
       const avatarOptions = {
           botAvatarInitials: '.',
           userAvatarInitials: 'Me',
           botAvatarImage: 'https://dwglogo.com/wp-content/uploads/2019/03/1600px-OpenAI_logo-1024x705.png',
           
           };
-      
-      const adapters = await window.WebChat.createDirectLineSpeechAdapters({
-        fetchCredentials: {
-          region: '` + process.env.DIRECT_LINE_SPEECH_REGION + `',
-          subscriptionKey: '` + process.env.DIRECT_LINE_SPEECH_TOKEN + `'
-        }
-      });
-
       window.WebChat.renderWebChat(
         {
-          ...adapters,
-          speechRecognitionLanguage: 'en-US',
+          directLine: window.WebChat.createDirectLine({
+            token: '` + process.env.DIRECT_LINE_TOKEN + `'
+          }),
           styleSet, styleOptions: avatarOptions
         },
         document.getElementById('webchat')
       );
-    })().catch(err => console.error(err));
     </script>
       
   </body>
