@@ -1,5 +1,7 @@
 # Simple Chatbot using Azure OpenAI service
 
+[![Build and deploy Node.js app to Azure Web App - openai-bot-webapp](https://github.com/michalmar/openai-demos-bot-webapp/actions/workflows/main_openai-bot-webapp.yml/badge.svg)](https://github.com/michalmar/openai-demos-bot-webapp/actions/workflows/main_openai-bot-webapp.yml)
+
 ## UPDATE:
 > This repo now uses the `ChatGPT-turbo` model in Azure OpenAI service. Esssentially only Prompts slightly changed (due to the [ChatML](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/chatgpt?pivots=programming-language-chat-ml) syntax), rest of the code and logi remains. 
 
