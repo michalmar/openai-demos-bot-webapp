@@ -89,13 +89,15 @@ server.get('/', (req, res) => {
       html,
       body {
           height: 100%;
-          background-image: linear-gradient(slategrey, darkslategrey);
+          background-image: linear-gradient( #343541,#525468);
           color: antiquewhite;
           font-family: 'Segoe UI', Calibri, sans-serif;
       }
+
       body {
         padding-left: 5px;
       }
+
       #webchat {
         height: 85%;
         width: 100%;
@@ -105,15 +107,15 @@ server.get('/', (req, res) => {
         
       }
       .webchat__stacked-layout--from-user{
-        background-color: rgba(70, 130, 180, .2);
+        background-color: rgba(32,33,35, .2);
       }
       
     </style>
   </head>
   <body>
     
-    <h1><img src='https://logos-world.net/wp-content/uploads/2021/02/Microsoft-Azure-Emblem.png' height="40">Azure OpenAI Service demo</h1>
-    <pre>version 20230131 - GPT3.5 (ChatGPT-like) - M</pre>
+    <h1><img src='https://logos-world.net/wp-content/uploads/2021/02/Microsoft-Azure-Emblem.png' height="40">Azure OpenAI - ChatGPT</h1>
+    <pre>version 20230320 | model: ChatGPT (turbo) | max_tokens: 1500 | temperature: 0.7 | Speech input enabled: false | Speech language: N/A</pre> 
     <div style="" id="webchat" role="main"></div>
     <script>
       // Set  the CSS rules.
@@ -124,30 +126,38 @@ server.get('/', (req, res) => {
           bubbleBorderStyle: 'solid',
           bubbleBorderWidth: 0,
           bubbleTextColor: 'antiquewhite',
-          userAvatarBackgroundColor: 'rgba(70, 130, 180, .3)',
+
+          userAvatarBackgroundColor: 'rgba(53, 55, 64, .3)',
           bubbleFromUserBackground: 'transparent', 
           bubbleFromUserBorderColor: '#E6E6E6',
           bubbleFromUserBorderRadius: 5,
           bubbleFromUserBorderStyle: 'solid',
           bubbleFromUserBorderWidth: 0,
           bubbleFromUserTextColor: 'antiquewhite',
+
           notificationText: 'white',
+
           bubbleMinWidth: 400,
           bubbleMaxWidth: 720,
+
           botAvatarBackgroundColor: 'antiquewhite',
           avatarBorderRadius: 2,
           avatarSize: 40,
+
           rootHeight: '100%',
           rootWidth: '100%',
           backgroundColor: 'rgba(70, 130, 180, .2)',
+
           hideUploadButton: 'true'
       });
+
       // After generated, you can modify the CSS rules.
       // Change font family and weight. 
       styleSet.textContent = {
           ...styleSet.textContent,
           fontWeight: 'regular'
       };
+
     // Set the avatar options. 
       const avatarOptions = {
           botAvatarInitials: '.',
