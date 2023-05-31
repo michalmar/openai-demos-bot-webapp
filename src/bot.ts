@@ -39,6 +39,8 @@ export class EchoBot extends ActivityHandler {
         // Chatbot:
         // `
         // const url = "https://openaimma.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2022-12-01"
+        
+        // this is the base prompt for the openai api
         let prompt = `<|im_start|>system As an advanced chatbot, your primary goal is to assist users to the best of your ability. This may involve answering questions, providing helpful information, or completing tasks based on user input. In order to effectively assist users, it is important to be detailed and thorough in your responses. Use examples and evidence to support your points and justify your recommendations or solutions.<|im_end|>
 
         <conversation history>
@@ -46,8 +48,10 @@ export class EchoBot extends ActivityHandler {
         <|im_start|>user <user input><|im_end|>
 
         <|im_start|>assistant`
-        const url = "https://openaimmaus.openai.azure.com/openai/deployments/gpt-35-turbo/completions?api-version=2022-12-01"
-
+        // const url = "https://openaimmaus.openai.azure.com/openai/deployments/gpt-35-turbo/completions?api-version=2022-12-01"
+        
+        // this is the url for the openai api
+        const url = process.env.OPENAI_API_URL
        
         let conversation_history = ""
         
@@ -76,14 +80,11 @@ export class EchoBot extends ActivityHandler {
                 conversation_history = ""
                 conversation_history_array = []
                 // send response to user
-                await context.sendActivity(MessageFactory.text("Zacinam novou konverzaci. Ptejte se."));
+                await context.sendActivity(MessageFactory.text("Clearing session. Starting with new context - just ask your question."));
                 
                 // By calling next() you ensure that the next BotHandler is run.
                 await next();
             } else {
-
-            
-
                 //construct conversation history from conversation_history_array
                 let tmp_conversation_history = ""
                 if (conversation_history_array.length > 10) {
@@ -122,7 +123,7 @@ export class EchoBot extends ActivityHandler {
                     conversation_history = conversation_history + "<|im_start|>user " + context.activity.text + "<|im_end|>\n<|im_start|>assistant " + data.choices[0].text + "\n"
                     conversation_history_array.push([context.activity.text,data.choices[0].text])
                     // send response to user
-                    const replyText = `${ data.choices[0].text.replace("<|im_end|>", "") } \n[~  ${data.usage.total_tokens} tokens]`;
+                    const replyText = `${ data.choices[0].text.replace("<|im_end|>", "") } \n[~  ${data.usage.total_tokens} tokens in ${conversation_history_array.length} turns]`;
                     // const replyText = `Echox: ${ context.activity.text } value: ${ context.activity.value }`;
                     await context.sendActivity(MessageFactory.text(replyText));
                     
@@ -130,7 +131,7 @@ export class EchoBot extends ActivityHandler {
                     await next();
                 } catch (error) {
                     console.log(error);
-                    await context.sendActivity(MessageFactory.text("Nerozumim. Zkuste jinak."));
+                    await context.sendActivity(MessageFactory.text(`${error} - try again later!`));
                     await next();
                 }
             }
