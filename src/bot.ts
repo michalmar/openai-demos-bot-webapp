@@ -111,20 +111,28 @@ export class EchoBot extends ActivityHandler {
                     // , frequency_penalty: "0.0"
                 };
 
-                // send request to openai
-                const data = await postDataToEndpoint(url, requestBody, headers);
+                try {
+                    // send request to openai
+                    const data = await postDataToEndpoint(url, requestBody, headers);
 
-                // update conversation history
-                //conversation_history = conversation_history + "User: " + context.activity.text + "\nChatbot: " + data.choices[0].text + "\n"
-                conversation_history = conversation_history + "<|im_start|>user " + context.activity.text + "<|im_end|>\n<|im_start|>assistant " + data.choices[0].text + "\n"
-                conversation_history_array.push([context.activity.text,data.choices[0].text])
-                // send response to user
-                const replyText = `${ data.choices[0].text.replace("<|im_end|>", "") } \n[~  ${data.usage.total_tokens} tokens]`;
-                // const replyText = `Echox: ${ context.activity.text } value: ${ context.activity.value }`;
-                await context.sendActivity(MessageFactory.text(replyText));
                 
-                // By calling next() you ensure that the next BotHandler is run.
-                await next();
+
+                    // update conversation history
+                    //conversation_history = conversation_history + "User: " + context.activity.text + "\nChatbot: " + data.choices[0].text + "\n"
+                    conversation_history = conversation_history + "<|im_start|>user " + context.activity.text + "<|im_end|>\n<|im_start|>assistant " + data.choices[0].text + "\n"
+                    conversation_history_array.push([context.activity.text,data.choices[0].text])
+                    // send response to user
+                    const replyText = `${ data.choices[0].text.replace("<|im_end|>", "") } \n[~  ${data.usage.total_tokens} tokens]`;
+                    // const replyText = `Echox: ${ context.activity.text } value: ${ context.activity.value }`;
+                    await context.sendActivity(MessageFactory.text(replyText));
+                    
+                    // By calling next() you ensure that the next BotHandler is run.
+                    await next();
+                } catch (error) {
+                    console.log(error);
+                    await context.sendActivity(MessageFactory.text("Nerozumim. Zkuste jinak."));
+                    await next();
+                }
             }
         });
 
