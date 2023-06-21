@@ -49,6 +49,8 @@ In the first step, we will create an OpenAI service - for this you need to [fill
 
 ### Creating a chatbot - editing the code
 
+> Important: this code is tested and working for Node.js 16.20 (LTS)
+
 The second step is to create your own bot within the Bot Framework, or we will start from a template for a simple web chatbot - [echo bot](https://github.com/microsoft/BotBuilder-Samples/tree/main/samples/typescript_nodejs/02.echo-bot). I chose JavaScript/TypeScript, but you can also find an example for Python or C#.
 
 In the `bot.ts` file you can see the chat application's own logic, we will focus on the `onMessage` method, which reacts to the arrival of a message from the user.

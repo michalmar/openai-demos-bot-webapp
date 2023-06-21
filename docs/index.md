@@ -42,6 +42,8 @@ V prvním kroku vytvoříme OpenAI službu - k té je potřeba [vyplnit formulá
 
 ### Vytvoření chatbota - úprava kódu
 
+> Důležité: tento postup je testován a funkční pro Node.js 16.20 (LTS)
+
 Druhý krok je tvorba vlastního bota v rámci Bot Frameworku, resp. vyjdeme z template pro jednoduchého web chatbota - [echo bot](https://github.com/microsoft/BotBuilder-Samples/tree/main/samples/typescript_nodejs/02.echo-bot). Já jsem si vybral JavaScript/TypeScript, ale můžete najít i příklad pro Python nebo C#.
 
 V souboru `bot.ts` je vidět vlastní logika chat aplikace, my se zaměříme na `onMessage` metodu, která reaguje na příchod zprávy od uživatele.
