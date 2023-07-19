@@ -8,19 +8,13 @@ export class EchoBot extends ActivityHandler {
     constructor() {
         super();
 
-        interface RequestBody {
-            prompt: string;
-            max_tokens: number;
-            temperature: number;
-            // presence_penalty: string;
-            // frequency_penalty: string;
-
-        }
-
         interface OpenAiResponse {
             choices: [
                 {
-                    text: string;
+                    message: {
+                        role: string;
+                        content: string;
+                    };
                 }
             ],
             usage: {
@@ -28,33 +22,14 @@ export class EchoBot extends ActivityHandler {
             }
         }
 
-        // let prompt_old = `
-        // As an advanced chatbot, your primary goal is to assist users to the best of your ability. This may involve answering questions, providing helpful information, or completing tasks based on user input. In order to effectively assist users, it is important to be detailed and thorough in your responses. Use examples and evidence to support your points and justify your recommendations or solutions.
-
-        // let conversation_history_array = [];
         let conversation_history_dict = {};
+        let messages_init = {"role":"system", "content": "As an advanced chatbot, your primary goal is to assist users to the best of your ability. This may involve answering questions, providing helpful information, or completing tasks based on user input. In order to effectively assist users, it is important to be detailed and thorough in your responses. Use examples and evidence to support your points and justify your recommendations or solutions."};
 
-        // <conversation history>
-
-        // User: <user input>
-        // Chatbot:
-        // `
-        // const url = "https://openaimma.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2022-12-01"
-        
-        // this is the base prompt for the openai api
-        let prompt = `<|im_start|>system As an advanced chatbot, your primary goal is to assist users to the best of your ability. This may involve answering questions, providing helpful information, or completing tasks based on user input. In order to effectively assist users, it is important to be detailed and thorough in your responses. Use examples and evidence to support your points and justify your recommendations or solutions.<|im_end|>
-
-        <conversation history>
-
-        <|im_start|>user <user input><|im_end|>
-
-        <|im_start|>assistant`
-        // const url = "https://openaimmaus.openai.azure.com/openai/deployments/gpt-35-turbo/completions?api-version=2022-12-01"
-        
         // this is the url for the openai api
         const url = process.env.OPENAI_API_URL
-       
-        let conversation_history = ""
+
+        // number of turns (user messages) to keep in the conversation history
+        const history_length = 3
         
         const headers = {
         'Content-Type': 'application/json',
@@ -63,7 +38,7 @@ export class EchoBot extends ActivityHandler {
         }
 
 
-        async function postDataToEndpoint(url: string, requestBody: RequestBody, headers: AxiosRequestHeaders): Promise<OpenAiResponse> {
+        async function postDataToEndpoint(url: string, requestBody: string, headers: AxiosRequestHeaders): Promise<OpenAiResponse> {
             try {
               const response: AxiosResponse = await axios.post(url, requestBody, {headers});
               return response.data;
@@ -71,6 +46,18 @@ export class EchoBot extends ActivityHandler {
               throw new Error(`Error posting data to ${url}: ${error}`);
             }
         }
+
+        // function that iterates through the conversation history and counts number of occurance "user" messages
+        function count_user_messages(conversation_history_array: any) {
+            let count = 0;
+            for (let i = 0; i < conversation_history_array.length; i++) {
+                if (conversation_history_array[i].role == "user") {
+                    count = count + 1;
+                }
+            }
+            return count;
+        }
+
 
         // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
         this.onMessage(async (context, next) => {
@@ -86,42 +73,51 @@ export class EchoBot extends ActivityHandler {
                 await next();
             } else {
                 //construct conversation history from conversation_history_array
+                // conversation_history_dict structure:
+                // {conversation_id: [{"role":"system", "content":"..."}
+                //                      , {"role":"user", "content":"..."}
+                //                     , {"role":"assistant", "content":"..."}
+                //                     , ...]
                 let tmp_conversation_history = ""
                 let conversation_history_array = conversation_history_dict[context.activity.conversation.id];
-                if (conversation_history_array.length > 2) {
-                    let N = 1; // set N to the number of elements you want to remove
+                
+                // check if conversation history is not larger than history_length, if so remove from begining
+                if (count_user_messages(conversation_history_array) > history_length) {
+                    console.log("history too long - removing first element")
+                    let N = 2; // removing two elements (question and answer)
                     for (let i = 0; i < N; i++) {
                         conversation_history_array.shift(); // remove the first element from the array
                     }
+                    // make sure that the first element is always the initial message (system message)
+                    conversation_history_array[0] = messages_init;
                 }
-                for (let i = 0; i < conversation_history_array.length; i++) {
-                    tmp_conversation_history = tmp_conversation_history + "<|im_start|>user " + conversation_history_array[i][0] + "<|im_end|>\n<|im_start|>assistant " + conversation_history_array[i][1] + "\n"
-                }
-                console.log(conversation_history_dict)
-                console.log(conversation_history_array.length)
                 
-                // construct prompt
-                let tmp_prompt = prompt.replace("<conversation history>", tmp_conversation_history).replace("<user input>", context.activity.text)
-                
-                // construct request body
-                const requestBody =     {
-                    prompt: tmp_prompt
-                    , max_tokens: 1500
-                    , temperature: 0.7
-                    // , presence_penalty: "0.0"
-                    // , frequency_penalty: "0.0"
-                };
+                // add the user input to the conversation history
+                conversation_history_array.push({"role":"user", "content":context.activity.text});
+             
+
+                let reqBody = JSON.stringify({
+                    "messages": conversation_history_array,
+                    "max_tokens": 1500,
+                    "temperature": 0.7,
+                    "frequency_penalty": 0,
+                    "presence_penalty": 0,
+                    "top_p": 1,
+                    "stop": null
+                  });
 
                 try {
                     // send request to openai
-                    const data = await postDataToEndpoint(url, requestBody, headers);
+                    const data = await postDataToEndpoint(url, reqBody, headers);
 
-                
-
+                    // add the chatbot response to the conversation history
+                    conversation_history_array.push({"role":data.choices[0].message.role, "content":data.choices[0].message.content});   
+                    
                     // update conversation history
-                    conversation_history_dict[context.activity.conversation.id].push([context.activity.text,data.choices[0].text])
+                    conversation_history_dict[context.activity.conversation.id] = conversation_history_array;
+
                     // send response to user
-                    const replyText = `${ data.choices[0].text.replace("<|im_end|>", "") } \n[~  ${data.usage.total_tokens} tokens in ${conversation_history_array.length} turns]`;
+                    const replyText = `${ data.choices[0].message.content } \n[~  ${data.usage.total_tokens} tokens in ${conversation_history_array.length} turns]`;
                     // const replyText = `Echox: ${ context.activity.text } value: ${ context.activity.value }`;
                     await context.sendActivity(MessageFactory.text(replyText));
                     
@@ -138,13 +134,11 @@ export class EchoBot extends ActivityHandler {
         this.onMembersAdded(async (context, next) => {
             const membersAdded = context.activity.membersAdded;
             const welcomeText = 'Hi, this is ChatGPT model! How can I help you?';
-            // delete converstaion history
-            conversation_history = ""
-            // conversation_history_array = []
+            
             for (const member of membersAdded) {
                 if (member.id !== context.activity.recipient.id) {
                     await context.sendActivity(MessageFactory.text(welcomeText, welcomeText));
-                    conversation_history_dict[context.activity.conversation.id] = [];
+                    conversation_history_dict[context.activity.conversation.id] = [messages_init];
                 }
             }
             // By calling next() you ensure that the next BotHandler is run.

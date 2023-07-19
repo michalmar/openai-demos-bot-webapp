@@ -3,7 +3,10 @@
 [![Build and deploy Node.js app to Azure Web App - openai-bot-webapp](https://github.com/michalmar/openai-demos-bot-webapp/actions/workflows/main_openai-bot-webapp.yml/badge.svg)](https://github.com/michalmar/openai-demos-bot-webapp/actions/workflows/main_openai-bot-webapp.yml)
 
 ## UPDATE:
-> This repo now uses the `ChatGPT-turbo` model in Azure OpenAI service. Esssentially only Prompts slightly changed (due to the [ChatML](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/chatgpt?pivots=programming-language-chat-ml) syntax), rest of the code and logi remains. 
+> This repo now uses the `ChatGPT-turbo` model in Azure OpenAI service. 
+
+> This repo now uses `Chat Completion API`: [Chat Completion documentation and examples](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/chatgpt?pivots=programming-language-chat-completions)
+> You need to change the URL so it accepts the Chat Completion API.
 
 ## Introduction
 Chatbots are computer programs that are used to create interaction between humans and computers. OpenAI `text-davinci` is a modern language model based on neural networks developed to understand human language. This article will focus on how to create an effective chatbot based on the [Azure OpenAI](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/) `text-davinci` model.
@@ -64,19 +67,23 @@ this.onMessage(async (context, next) => {
 });
 ```
 
-We modify this method in such a way that we send the user input (query or command) in the variable `context.activity.text` to the OpenAI service to get the answer and subsequently use the answer from OpenAI in the answer to the user (`data.choices[0].text `):
+We modify this method in such a way that we send the user input (query or command) in the variable `context.activity.text` to the OpenAI service to get the answer and subsequently use the answer from OpenAI in the answer to the user (`data.choices[0].message.content `):
 
 ```javascript
 this.onMessage(async (context, next) => {
     
-    const requestBody =     {
-        prompt: context.activity.text
-        , max_tokens: 500
-        , temperature: 0.7
-    };
-    const data = await postDataToEndpoint(url, requestBody, headers);
+    let reqBody = JSON.stringify({
+      "messages": [{"role":"user","content":context.activity.text}}],
+      "max_tokens": 1500,
+      "temperature": 0.7,
+      "frequency_penalty": 0,
+      "presence_penalty": 0,
+      "top_p": 1,
+      "stop": null
+   });
+    const data = await postDataToEndpoint(url, reqBody, headers);
     
-    const replyText = `${ data.choices[0].text }`;
+    const replyText = `${ data.choices[0].message.content }`;
 
     await context.sendActivity(MessageFactory.text(replyText));
     
@@ -91,7 +98,7 @@ But this does not make the chatbot we probably would like have - we are missing 
 
 **How to achieve that?**
 
-Working with OpenAI text models mainly consists of correct setting and tuning of the prompt (more [here](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/completions)). We will use this prompt for our chatbot:
+Working with OpenAI text models mainly consists of correct setting and tuning of the prompt (more [here](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/chatgpt?pivots=programming-language-chat-completions)). We will use this prompt for our chatbot:
 
 ```
 As an advanced chatbot, your primary goal is to assist users to the best of your ability. This may involve answering questions, providing helpful information, or completing tasks based on user input. In order to effectively assist users, it is important to be detailed and thorough in your responses. Use examples and evidence to support your points and justify your recommendations or solutions.
@@ -102,20 +109,21 @@ User: <user input>
 Chatbot:
 ```
 
-> ChatGPT version:
+
+> ChatGPT/GPT-4 Chat Completion API version:
 > ```
-> <|im_start|>system As an advanced chatbot, your primary goal is to assist users to the best of your ability. This may involve answering questions, providing helpful information, or completing tasks based on user input. In order to effectively assist users, it is important to be detailed and thorough in your responses. Use examples and evidence to support your points and justify your recommendations or solutions.<|im_end|>
+> {"role":"system","content":"ystem As an advanced chatbot, your primary goal is to assist users to the best of your ability. This may involve answering questions, providing helpful information, or completing tasks based on user input. In order to effectively assist users, it is important to be detailed and thorough in your responses. Use examples and evidence to support your points and justify your recommendations or solutions."},
 >
-><conversation history>
+> <conversation history>
 >
-><|im_start|>user <user input><|im_end|>
->
-><|im_start|>assistant`
-```
+> {"role":"user", "content":"<user input>"}
+> ...
+> ```
 
-In the first part, there is an instruction on how the model will behave to the entered text - giving answers including examples to support decision-making, completion. This is where personality tuning may appear as well, for example: behave professionally or firendly etc.
 
-Then the following section `<conversation history>` holds the history of the conversation and we gradually adding the the input and output of the chatbot. This part is important so that the chat bot correctly understands the context of the communication.
+In the first part (system message), there is an instruction on how the model will behave to the entered text - giving answers including examples to support decision-making, completion. This is where personality tuning may appear as well, for example: behave professionally or firendly etc.
+
+Then the following section `<conversation history>` holds the history of the conversation and we gradually adding the the input and output of the chatbot in form of `{"role": "user", "content": "user query"}, {"role":"assistant","content":"bots anwer"}`. This part is important so that the chat bot correctly understands the context of the communication.
 
 Next is `User: <user input>`, for which we will add the user input.
 
@@ -124,31 +132,39 @@ The entire function can then look like this:
 
 ```javascript
 this.onMessage(async (context, next) => {
-    
-    // construct prompt
-    let tmp_prompt = prompt.replace("<conversation history>", conversation_history).replace("<user input>", context.activity.text)
-    
-    // construct request
-    const requestBody =     {
-        prompt: tmp_prompt
-        , max_tokens: 500
-        , temperature: 0.7
 
-    };
+         
+         // add the user input to the conversation history
+         conversation_history_array.push({"role":"user", "content":context.activity.text});
+      
 
-    // send request to OpenAI
-    const data = await postDataToEndpoint(url, requestBody, headers);
+         let reqBody = JSON.stringify({
+            "messages": conversation_history_array,
+            "max_tokens": 1500,
+            "temperature": 0.7,
+            "frequency_penalty": 0,
+            "presence_penalty": 0,
+            "top_p": 1,
+            "stop": null
+         });
 
+        
+         // send request to openai
+         const data = await postDataToEndpoint(url, reqBody, headers);
 
-    // update converstation historz
-    conversation_history = conversation_history + "User: " + context.activity.text + "\nChatbot: " + data.choices[0].text + "\n"
-    
-    const replyText = `${ data.choices[0].text }`;
+         // add the chatbot response to the conversation history
+         conversation_history_array.push({"role":data.choices[0].message.role, "content":data.choices[0].message.content});   
+         
 
-    await context.sendActivity(MessageFactory.text(replyText));
-    
-    // By calling next() you ensure that the next BotHandler is run.
-    await next();
+         // send response to user
+         const replyText = `${ data.choices[0].message.content }`;
+
+         await context.sendActivity(MessageFactory.text(replyText));
+         
+         // By calling next() you ensure that the next BotHandler is run.
+         await next();
+      
+   }
 });
 ```
 
