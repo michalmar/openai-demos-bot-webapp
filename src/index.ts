@@ -115,7 +115,7 @@ server.get('/', (req, res) => {
   <body>
     
     <h1><img src='https://logos-world.net/wp-content/uploads/2021/02/Microsoft-Azure-Emblem.png' height="40">Azure OpenAI - ChatGPT</h1>
-    <pre>version 20230321 | model: ChatGPT (turbo) | max_tokens: 1500 | temperature: 0.7 | Speech input enabled: false | Speech language: N/A</pre> 
+    <pre>version 20230719 | model: ChatGPT (turbo) | API: Chat Completion API | max_tokens: 1500 | temperature: 0.7 | Speech input enabled: false | Speech language: N/A</pre> 
     <div style="" id="webchat" role="main"></div>
     <script>
       // Set  the CSS rules.
