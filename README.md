@@ -3,9 +3,9 @@
 [![Build and deploy Node.js app to Azure Web App - openai-bot-webapp](https://github.com/michalmar/openai-demos-bot-webapp/actions/workflows/main_openai-bot-webapp.yml/badge.svg)](https://github.com/michalmar/openai-demos-bot-webapp/actions/workflows/main_openai-bot-webapp.yml)
 
 ## UPDATE:
-> This repo now uses the `ChatGPT-turbo` model in Azure OpenAI service. Esssentially only Prompts slightly changed (due to the [ChatML](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/chatgpt?pivots=programming-language-chat-ml) syntax), rest of the code and logi remains. 
+> This repo now uses the `ChatGPT-turbo` model in Azure OpenAI service. 
 
-> This repo now uses Chat Completion API: [Chat Completion documentation and examples](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/chatgpt?pivots=programming-language-chat-completions)
+> This repo now uses `Chat Completion API`: [Chat Completion documentation and examples](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/chatgpt?pivots=programming-language-chat-completions)
 > You need to change the URL so it accepts the Chat Completion API.
 
 ## Introduction
