@@ -79,6 +79,7 @@ export class EchoBot extends ActivityHandler {
                 //                     , {"role":"assistant", "content":"..."}
                 //                     , ...]
                 let tmp_conversation_history = ""
+                conversation_history_dict[context.activity.conversation.id] ??= [messages_init];
                 let conversation_history_array = conversation_history_dict[context.activity.conversation.id];
                 
                 // check if conversation history is not larger than history_length, if so remove from begining
