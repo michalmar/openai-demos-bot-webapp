@@ -65,13 +65,14 @@ adapter.onTurnError = onTurnErrorHandler;
 const myBot = new EchoBot();
 
 // Listen for incoming requests.
-server.post('/api/messages', async (req, res) => {
+server.post('/api/messages', async (req, res, next) => {
     // Route received a request to adapter for processing
     await adapter.process(req, res, (context) => myBot.run(context));
+    return next();
 });
 
 // Listen for HTTP request on /
-server.get('/', (req, res) => {
+server.get('/', (req, res, next) => {
     // res.send('Hello World!');
 
     // display basic html page
@@ -115,7 +116,7 @@ server.get('/', (req, res) => {
   <body>
     
     <h1><img src='https://logos-world.net/wp-content/uploads/2021/02/Microsoft-Azure-Emblem.png' height="40">Azure OpenAI - ChatGPT</h1>
-    <pre>version 20230719 | model: ChatGPT (turbo) | API: Chat Completion API | max_tokens: 1500 | temperature: 0.7 | Speech input enabled: false | Speech language: N/A</pre> 
+    <pre>version 20231030 | model: ChatGPT (turbo) | API: Chat Completion API | max_tokens: 1500 | temperature: 0.7 | Speech input enabled: false | Speech language: N/A</pre> 
     <div style="" id="webchat" role="main"></div>
     <script>
       // Set  the CSS rules.
@@ -180,7 +181,7 @@ server.get('/', (req, res) => {
 </html>
     `);
     res.end();
-
+    return next();
 });
 
 // Listen for Upgrade requests for Streaming.
