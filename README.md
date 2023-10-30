@@ -34,9 +34,9 @@ Services and tools used:
 
 ```mermaid
 graph TD;
-webapp(Web UI & Bot\n hosting) -- query --> bot;
-bot((Bot Service)) -- response --> webapp;
-bot <-->  oai(OpenAI service);
+webapp(Web App/Teams/etc.) -- query --> bot;
+fe <-->  oai(OpenAI service);bot((Bot Service)) -- response --> webapp;
+bot <--> fe(Bot app);
 
 ```
 
