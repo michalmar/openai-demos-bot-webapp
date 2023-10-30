@@ -4,6 +4,7 @@
 
 ## UPDATE:
 > This repo now uses the `ChatGPT-turbo` model in Azure OpenAI service. 
+> Added support for Node.js 18.18 (LTS) and 20.09 (LTS) versions.
 
 > This repo now uses `Chat Completion API`: [Chat Completion documentation and examples](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/chatgpt?pivots=programming-language-chat-completions)
 > You need to change the URL so it accepts the Chat Completion API.
@@ -52,7 +53,7 @@ In the first step, we will create an OpenAI service - for this you need to [fill
 
 ### Creating a chatbot - editing the code
 
-> Important: this code is tested and working for Node.js 16.20 (LTS)
+> Important: this code is tested and working for Node.js 16.20 (LTS), 18.18 (LTS), 20.09 (LTS)
 
 The second step is to create your own bot within the Bot Framework, or we will start from a template for a simple web chatbot - [echo bot](https://github.com/microsoft/BotBuilder-Samples/tree/main/samples/typescript_nodejs/02.echo-bot). I chose JavaScript/TypeScript, but you can also find an example for Python or C#.
 
