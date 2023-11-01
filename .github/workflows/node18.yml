@@ -5,8 +5,7 @@ name: xxxx
 
 on:
   push:
-    branches:
-      - "fb-upload-file"
+    branches: [ fb-upload-file ]
   workflow_dispatch:
 
 jobs:
